@@ -1,6 +1,7 @@
 package com.atguigu.order.service.impl;
 
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.atguigu.order.bean.Order;
 import com.atguigu.order.frign.ProductFeignClient;
 import com.atguigu.order.service.OrderService;
@@ -33,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     ProductFeignClient productFeignClient;
 
+    //@SentinelResource(value = "createOrder")
     @Override
     public Order createOrder(Long productId, Long userId) {
 //        Product product = getProductFromRemote(productId);

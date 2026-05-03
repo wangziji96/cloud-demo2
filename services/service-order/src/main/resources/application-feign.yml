@@ -11,8 +11,12 @@ spring:
             logger-level: full
             connect-timeout: 3000
             read-timeout: 5000
-#            request-interceptors:
-#              - com.atguigu.order.interceptor.XTokenRequestInterceptor
+    #            request-interceptors:
+    #              - com.atguigu.order.interceptor.XTokenRequestInterceptor
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+      eager: true
 feign:
   sentinel:
     enabled: true
