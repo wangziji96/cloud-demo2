@@ -2,6 +2,7 @@ package com.atguigu.order.service.impl;
 
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.atguigu.order.bean.Order;
 import com.atguigu.order.frign.ProductFeignClient;
 import com.atguigu.order.service.OrderService;
@@ -34,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     ProductFeignClient productFeignClient;
 
-    //@SentinelResource(value = "createOrder")
+    @SentinelResource(value = "createOrder",blockHandler = "createOrderFallback")
     @Override
     public Order createOrder(Long productId, Long userId) {
 //        Product product = getProductFromRemote(productId);
@@ -49,6 +50,17 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalAmount(product.getPrice().multiply(new BigDecimal(product.getNum())));
         //todo 远程商品列表
         order.setProductList(Arrays.asList(product));
+        return order;
+    }
+
+    public Order createOrderFallback(Long productId, Long userId, BlockException e) {
+        Order order = new Order();
+        order.setId(0L);
+        order.setUserId(userId);
+        order.setNickName("未知用户");
+        order.setAddress("异常信息：" + e.getClass());
+        order.setTotalAmount(new BigDecimal(0));
+        //order.setProductList(null);
         return order;
     }
 
