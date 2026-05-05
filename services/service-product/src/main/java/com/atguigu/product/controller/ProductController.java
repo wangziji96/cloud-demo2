@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
 
-@RequestMapping("/api/product")
+//@RequestMapping("/api/product")
 @RestController
 public class ProductController {
 
@@ -24,7 +24,7 @@ public class ProductController {
         System.out.println("请求头：" + request.getHeader("X-Token"));
         System.out.println("查询商品：" + productId);
         Product product = productService.getProductById(productId);
-        int i = 10/0;
+        //int i = 10/0;
         /*try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
