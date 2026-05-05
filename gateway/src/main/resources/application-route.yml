@@ -10,7 +10,10 @@ spring:
         - id: order-route
           uri: lb://service-order
           predicates:
-            - Path=/api/order/**
+            - name: Path
+              args:
+                pattern: /api/order/**
+                matchTrailingSlash: true
           order: 1
         - id: product-route
           uri: lb://service-product
