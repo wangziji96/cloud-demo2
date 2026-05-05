@@ -5,7 +5,18 @@ spring:
         - id: bing-route
           uri: https://cn.bing.com/
           predicates:
-            - Path=/**
+            - name: Path
+              args:
+                pattern: /search
+            - name: Query
+              args:
+                param: q
+                regexp: haha
+#            - Vip=user,leifengyang
+            - name: Vip
+              args:
+                param: user
+                value: leifengyang
           order: 10
         - id: order-route
           uri: lb://service-order
