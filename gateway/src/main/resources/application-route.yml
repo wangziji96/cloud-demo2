@@ -8,6 +8,10 @@ spring:
             allowed-headers: '*'
             allowed-methods: '*'
       routes:
+        - id: auth-route
+          uri: lb://service-auth
+          predicates:
+            - Path=/auth/**
         - id: bing-route
           uri: https://cn.bing.com/
           predicates:
