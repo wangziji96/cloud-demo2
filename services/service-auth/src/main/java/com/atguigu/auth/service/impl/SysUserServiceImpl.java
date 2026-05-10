@@ -4,6 +4,7 @@ import com.atguigu.auth.SysUser;
 import com.atguigu.auth.User;
 import com.atguigu.auth.mapper.RoleMapper;
 import com.atguigu.auth.mapper.SysUserMapper;
+import com.atguigu.auth.mapper.SysUserRoleMapper;
 import com.atguigu.auth.service.ISysUserService;
 import com.atguigu.result.Result;
 import com.atguigu.utils.JwtUtil;
@@ -23,6 +24,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUserMapper userMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private SysUserRoleMapper userRoleMapper;
     @Override
     @Transactional
     public void register(SysUser user) {
@@ -52,7 +55,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new RuntimeException("用户被禁用");
         }
         //3.查询角色Id
-        List<String> roleCodes = roleMapper.findRoleCodeByUserId(sysUser.getId());
+        List<String> roleCodes = userRoleMapper.findRoleCodeByUserId(sysUser.getId());
         //4.生成jwt
         String token = JwtUtil.generateToken(sysUser.getId().toString(), roleCodes);
         return Result.success(token);

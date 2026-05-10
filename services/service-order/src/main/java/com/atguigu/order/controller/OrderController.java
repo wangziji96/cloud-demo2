@@ -4,6 +4,8 @@ package com.atguigu.order.controller;
 import com.atguigu.order.bean.Order;
 import com.atguigu.order.service.OrderService;
 import com.atguigu.order.properties.OrderProperties;
+import com.atguigu.user.LoginUser;
+import com.atguigu.utils.UserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +50,9 @@ public class OrderController {
 
     @GetMapping("/writeDb")
     public String writeDb() {
-        return "writeDb success...";
+        LoginUser user = UserContext.getUser();
+
+        return "writeDb success..." + user.getUserId() + ":" + user.getRoles();
     }
 
     @GetMapping("/readDb")

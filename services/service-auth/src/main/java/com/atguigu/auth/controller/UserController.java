@@ -4,6 +4,7 @@ import com.atguigu.auth.SysUser;
 import com.atguigu.auth.User;
 import com.atguigu.auth.service.ISysUserService;
 import com.atguigu.result.Result;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public class UserController {
     }
     //用户登录
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
+    public Result login(@Valid @RequestBody User user) {
         return userService.login(user);
     }
 }

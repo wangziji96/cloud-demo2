@@ -30,4 +30,10 @@ public interface BaseEnum<T> {
         }
         return null;
     }
+    default boolean equalsValue(Integer value){
+        if (value == null) {
+            return false;
+        }
+        return getValue() == value;
+    }
 }
