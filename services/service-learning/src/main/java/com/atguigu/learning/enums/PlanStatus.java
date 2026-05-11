@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
-public enum PlanStatus implements BaseEnum {
+public enum PlanStatus implements BaseEnum<Integer> {
     NO_PLAN(0, "没有计划"),
     PLAN_RUNNING(1, "计划进行中"),
     ;
@@ -21,6 +21,9 @@ public enum PlanStatus implements BaseEnum {
         this.desc = desc;
     }
 
+    public Integer getValue() {
+        return value;
+    }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static PlanStatus of(Integer value){

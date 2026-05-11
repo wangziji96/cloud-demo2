@@ -1,0 +1,37 @@
+spring:
+  rabbitmq:
+    # 集群地址，多个用逗号分隔
+    addresses: 192.168.0.104:5672
+    username: wzj
+    password: wang15915
+    virtual-host: /
+    # 连接超时
+    connection-timeout: 5000ms
+    # 请求心跳超时
+    requested-heartbeat: 60s
+
+    # 开启发布确认模式（生产者必开）
+    publisher-confirm-type: correlated
+    # 开启发布退回模式（消息无法路由到队列时退回）
+    publisher-returns: true
+
+    # 消费者配置
+    listener:
+      simple:
+        # 手动确认模式（生产标配，防止消息丢失）
+        acknowledge-mode: manual
+        # 每次抓取的消息数（控制消费吞吐量）
+        prefetch: 250
+        # 消费者并发数（建议最小-最大范围，根据压测调整）
+        concurrency: 2
+        max-concurrency: 10
+        # 重试机制：发生异常时是否重新放回队列（通常不启用，改用死信+重试拦截器）
+        default-requeue-rejected: false
+        # 自定义重试拦截器（在代码中配置 RetryOperationsInterceptor 时此处可以关闭）
+        # 注意：此时不宜再启用默认重试，避免双重重试。
+      # 如果需要 direct 类型的并发控制，可单独配置 direct listener
+
+    template:
+      # 消息发送时强制添加 return callback
+      mandatory: true
+      # 可以配置统一的 RetryTemplate，用于生产者发送失败重试（代码中实现）

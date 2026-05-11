@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
-public enum LessonStatus implements BaseEnum {
+public enum LessonStatus implements BaseEnum<Integer> {
     NOT_BEGIN(0, "未学习"),
     LEARNING(1, "学习中"),
     FINISHED(2, "已学完"),
@@ -21,6 +21,11 @@ public enum LessonStatus implements BaseEnum {
     LessonStatus(int value, String desc) {
         this.value = value;
         this.desc = desc;
+    }
+
+    @Override
+    public Integer getValue() {
+        return value;
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)

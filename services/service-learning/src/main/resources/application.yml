@@ -1,0 +1,13 @@
+server:
+  port: 10004
+spring:
+  application:
+    name: service-learning
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        import-check:
+          enabled: false
+  profiles:
+    include: datasource,mybatisplus,rabbitmq

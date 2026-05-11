@@ -3,7 +3,7 @@ server:
 spring:
   profiles:
     active: prod
-    include: feign,datasource,mybatisplus
+    include: feign,datasource,mybatisplus,rabbitmq
   application:
     name: service-order
   cloud:

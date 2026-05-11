@@ -2,25 +2,27 @@ package com.atguigu.order.controller;
 
 
 import com.atguigu.order.bean.Order;
+import com.atguigu.order.bean.OrderBasicDTO;
+import com.atguigu.order.mq.OrderMessageProducer;
 import com.atguigu.order.service.OrderService;
 import com.atguigu.order.properties.OrderProperties;
+import com.atguigu.result.Result;
 import com.atguigu.user.LoginUser;
 import com.atguigu.utils.UserContext;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 //@RefreshScope
 //@RequestMapping("/api/order")
 @Slf4j
 @RestController
+@AllArgsConstructor
 public class OrderController {
 
-    @Autowired
-    OrderService orderService;
+    private final OrderService orderService;
+    private final OrderMessageProducer orderMessageProducer;
 
     /*@Value("${order.timeout}")
     String orderTimeout;
@@ -29,6 +31,12 @@ public class OrderController {
 
     @Autowired
     OrderProperties orderProperties;
+
+    @PostMapping("/orderMq")
+    public Result orderMq(@RequestBody OrderBasicDTO  order) {
+        orderMessageProducer.sendOrderCreated(order);
+        return Result.success();
+    }
 
     @GetMapping("/config")
     public String config() {
