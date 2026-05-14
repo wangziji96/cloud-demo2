@@ -8,6 +8,10 @@ spring:
             allowed-headers: '*'
             allowed-methods: '*'
       routes:
+        - id: auth-learning
+          uri: lb://service-learning
+          predicates:
+            - Path=/lessons/**
         - id: auth-route
           uri: lb://service-auth
           predicates:
