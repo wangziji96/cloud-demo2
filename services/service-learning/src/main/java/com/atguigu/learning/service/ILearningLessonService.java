@@ -31,4 +31,11 @@ public interface ILearningLessonService extends IService<LearningLesson> {
      * 创建学习计划
      */
     Result createLearningPlan(LearningPlanDto learningPlanDto);
+
+    /**
+     * 查询学习计划
+     * @param pageQuery
+     * @return
+     */
+    Result queryMyPlans(PageQuery pageQuery);
 }

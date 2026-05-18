@@ -40,4 +40,12 @@ public class LearningLessonController {
     public Result createLearningPlan(@Valid @RequestBody LearningPlanDto learningPlanDto) {
         return learningLessonService.createLearningPlan(learningPlanDto);
     }
+
+    /**
+     * 查询学习计划
+     */
+    @GetMapping("/plans")
+    public Result queryMyPlans(PageQuery pageQuery) {
+        return learningLessonService.queryMyPlans(pageQuery);
+    }
 }
