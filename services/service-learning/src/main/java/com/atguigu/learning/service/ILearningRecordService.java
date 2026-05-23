@@ -1,6 +1,9 @@
 package com.atguigu.learning.service;
 
+import com.atguigu.learning.domain.dto.LearningLessonDTO;
+import com.atguigu.learning.domain.dto.LearningRecordFormDTO;
 import com.atguigu.learning.domain.po.LearningRecord;
+import com.atguigu.result.Result;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +16,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ILearningRecordService extends IService<LearningRecord> {
 
+    Result<LearningLessonDTO> queryLearningRecordByCourse(Long courseId);
+
+    /**
+     * 提交学习记录
+     * @param learningRecordFormDTO
+     * @return
+     */
+    Result<Void> submitLearningRecord(LearningRecordFormDTO learningRecordFormDTO);
 }

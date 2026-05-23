@@ -11,7 +11,7 @@ spring:
         - id: auth-learning
           uri: lb://service-learning
           predicates:
-            - Path=/lessons/**
+            - Path=/learning/**
         - id: auth-route
           uri: lb://service-auth
           predicates:

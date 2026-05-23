@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.learning.mapper.LearningLessonMapper">
 
+    <select id="queryByUserAndCourseId" resultType="com.atguigu.learning.domain.po.LearningLesson">
+        select *
+        from learning_lesson
+        where user_id = #{userId}
+          and course_id = #{courseId}
+    </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.atguigu.learning.mapper;
 import com.atguigu.learning.domain.po.LearningLesson;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -15,4 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface LearningLessonMapper extends BaseMapper<LearningLesson> {
 
+    LearningLesson queryByUserAndCourseId(@Param("userId") String userId, @Param("courseId") Long courseId);
 }
