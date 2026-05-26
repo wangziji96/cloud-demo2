@@ -8,6 +8,10 @@ spring:
             allowed-headers: '*'
             allowed-methods: '*'
       routes:
+        - id: promotion-route
+          uri: lb://service-promotion
+          predicates:
+            - Path=/coupons/**
         - id: auth-learning
           uri: lb://service-learning
           predicates:

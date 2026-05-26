@@ -14,6 +14,7 @@
         <module>service-order</module>
         <module>service-auth</module>
         <module>service-learning</module>
+        <module>service-promotion</module>
     </modules>
 
     <artifactId>services</artifactId>

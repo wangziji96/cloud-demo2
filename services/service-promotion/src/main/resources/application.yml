@@ -1,0 +1,28 @@
+server:
+  port: 10005
+#  servlet:
+#    context-path: /learning
+spring:
+  application:
+    name: service-promotion
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        import-check:
+          enabled: false
+  profiles:
+    include: datasource,mybatisplus
+springdoc:
+  api-docs:
+    # 开启 API 文档接口（默认 /v3/api-docs）
+    enabled: true
+  swagger-ui:
+    # Swagger UI 页面路径，默认 /swagger-ui.html
+    path: /swagger-ui.html
+    # 按标签排序
+    tags-sorter: alpha
+    # 按方法排序
+    operations-sorter: alpha
+  # 扫描的包路径，不配置则默认扫描整个项目
+  packages-to-scan: com.atguigu.promotion.controller
