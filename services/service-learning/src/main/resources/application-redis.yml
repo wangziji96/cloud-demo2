@@ -1,9 +1,9 @@
 spring:
   data:
     redis:
-      host: 127.0.0.1
+      host: 192.168.0.104
       port: 6379
-      password: wang15915  # 生产环境务必设置密码
+      #password: wang15915  # 生产环境务必设置密码
       database: 0       # 数据库索引
       timeout: 10s      # 命令执行超时时间
 

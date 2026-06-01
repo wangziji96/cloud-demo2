@@ -93,7 +93,7 @@ public class LearningRecordDelayTaskHandle {
         try {
             String key = StrUtil.format(RECORD_KEY_TEMPLATE, lessonId);
             //根据key和sectionId取出数据
-            RecordCacheData recordCacheData = (RecordCacheData) redisTemplate.opsForHash().get(key, sectionId);
+            RecordCacheData recordCacheData = (RecordCacheData) redisTemplate.opsForHash().get(key, sectionId.toString());
             if (recordCacheData == null) {
                 return null;
             }
@@ -109,10 +109,10 @@ public class LearningRecordDelayTaskHandle {
     public void clearRecordCache(Long lessonId, Long sectionId) {
         log.info("清理学习记录缓存：{},{}", lessonId, sectionId);
         String key = StrUtil.format(RECORD_KEY_TEMPLATE, lessonId);
-        redisTemplate.opsForHash().delete(key, sectionId);
+        redisTemplate.opsForHash().delete(key, sectionId.toString());
     }
 
-    private void writeRecoedCache(LearningRecord record) {
+    public void writeRecoedCache(LearningRecord record) {
         log.info("添加学习记录到缓存：{}", record);
         try {
             //1.数据转换
@@ -120,7 +120,7 @@ public class LearningRecordDelayTaskHandle {
             //2.写入Redis
             String key = StrUtil.format(RECORD_KEY_TEMPLATE, record.getLessonId());
             //key,hashkey,value
-            redisTemplate.opsForHash().put(key, record.getSectionId(), recordCacheData);
+            redisTemplate.opsForHash().put(key, record.getSectionId().toString(), recordCacheData);
             //3.设置过期时间
             redisTemplate.expire(key, Duration.ofMinutes(1));
         } catch (Exception e) {
