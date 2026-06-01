@@ -12,4 +12,4 @@ spring:
         import-check:
           enabled: false
   profiles:
-    include: datasource,mybatisplus,rabbitmq
+    include: datasource,mybatisplus,rabbitmq,redis
