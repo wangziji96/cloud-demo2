@@ -14,17 +14,21 @@ import com.atguigu.promotion.domain.vo.CouponDetail;
 import com.atguigu.promotion.domain.vo.CouponPageVO;
 import com.atguigu.promotion.domain.vo.CouponScopeVO;
 import com.atguigu.promotion.enums.CouponStatus;
+import com.atguigu.promotion.enums.ObtainType;
 import com.atguigu.promotion.mapper.CouponMapper;
 import com.atguigu.promotion.service.ICouponService;
+import com.atguigu.promotion.service.IExchangeCodeService;
 import com.atguigu.result.Result;
 import com.atguigu.utils.UserContext;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,11 +45,13 @@ import java.util.stream.Collectors;
  * @since 2026-05-25
  */
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> implements ICouponService {
 
     private final CouponMapper couponMapper;
     private final CouponScopeServiceImpl couponScopeService;
+    private final IExchangeCodeService codeService;
 
     /**
      * 新增优惠券
@@ -149,6 +155,15 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
             c.setStatus(CouponStatus.UN_ISSUE);
         }
         couponMapper.updateById(c);
+        //5.判断是否需要生成兑换码，优惠券类型必须是兑换码，优惠券状态必须为待发放
+        if (coupon.getObtainWay() == ObtainType.ISSUE && coupon.getStatus() == CouponStatus.DRAFT) {
+            //打印当前时间
+            LocalDateTime presentTime = LocalDateTime.now();
+            log.info("当前调用生成兑换码方法的时间：{}", presentTime);
+            coupon.setIssueEndTime(c.getIssueEndTime());
+            codeService.asyncGenerateCode(coupon);
+            log.info("成功调用生成兑换码方法");
+        }
         return null;
     }
 

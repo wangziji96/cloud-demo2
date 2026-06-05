@@ -10,6 +10,7 @@ import com.atguigu.promotion.domain.query.CouponQuery;
 import com.atguigu.promotion.domain.vo.CouponDetail;
 import com.atguigu.promotion.domain.vo.CouponPageVO;
 import com.atguigu.promotion.service.ICouponService;
+import com.atguigu.promotion.service.IExchangeCodeService;
 import com.atguigu.result.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 public class CouponController {
     @Autowired
     private ICouponService couponService;
+    @Autowired
+    private IExchangeCodeService exchangeCodeService;
 
     /**
      * 新增优惠券

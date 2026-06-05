@@ -12,7 +12,7 @@ spring:
         import-check:
           enabled: false
   profiles:
-    include: datasource,mybatisplus
+    include: datasource,mybatisplus,redis
 springdoc:
   api-docs:
     # 开启 API 文档接口（默认 /v3/api-docs）
