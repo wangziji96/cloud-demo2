@@ -9,15 +9,19 @@ import com.atguigu.promotion.domain.dto.CouponFormDTO;
 import com.atguigu.promotion.domain.dto.CouponIssueFormDTO;
 import com.atguigu.promotion.domain.po.Coupon;
 import com.atguigu.promotion.domain.po.CouponScope;
+import com.atguigu.promotion.domain.po.UserCoupon;
 import com.atguigu.promotion.domain.query.CouponQuery;
 import com.atguigu.promotion.domain.vo.CouponDetail;
 import com.atguigu.promotion.domain.vo.CouponPageVO;
 import com.atguigu.promotion.domain.vo.CouponScopeVO;
+import com.atguigu.promotion.domain.vo.CouponVO;
 import com.atguigu.promotion.enums.CouponStatus;
 import com.atguigu.promotion.enums.ObtainType;
+import com.atguigu.promotion.enums.UserCouponStatus;
 import com.atguigu.promotion.mapper.CouponMapper;
 import com.atguigu.promotion.service.ICouponService;
 import com.atguigu.promotion.service.IExchangeCodeService;
+import com.atguigu.promotion.service.IUserCouponService;
 import com.atguigu.result.Result;
 import com.atguigu.utils.UserContext;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -49,6 +53,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> implements ICouponService {
 
+    private final IUserCouponService userCouponService;
     private final CouponMapper couponMapper;
     private final CouponScopeServiceImpl couponScopeService;
     private final IExchangeCodeService codeService;
@@ -211,6 +216,46 @@ public class CouponServiceImpl extends ServiceImpl<CouponMapper, Coupon> impleme
         CouponDetail couponDetail = BeanUtil.copyProperties(coupon, CouponDetail.class);
         couponDetail.setCouponScope(couponScopeVOS);
         return Result.success(couponDetail);
+    }
+
+    /**
+     * 查询发放中的优惠券
+     *
+     * @return
+     */
+    @Override
+    public Result<List<CouponVO>> queryIssuingCoupons() {
+        //1.获取用户Id
+        String userId = UserContext.getUser().getUserId();
+        //2.查询发放中的优惠券
+        List<Coupon> coupons = lambdaQuery().eq(Coupon::getStatus, CouponStatus.ISSUING)
+                .eq(Coupon::getObtainWay, ObtainType.PUBLIC)
+                .list();
+        //3.查询用户券获得计算数据
+        List<Long> couponIds = coupons.stream().map(c -> c.getId()).collect(Collectors.toList());
+        List<UserCoupon> userCoupons = userCouponService.lambdaQuery()
+                .eq(UserCoupon::getUserId, userId)
+                .in(UserCoupon::getCouponId, couponIds)
+                .list();
+        //当前用户已领取优惠券且未使用数量，key是优惠券Id，value是已领取数量
+        Map<Long, Long> unusedMap = userCoupons.stream()
+                .filter(uc -> uc.getStatus() == UserCouponStatus.UNUSED)
+                .collect(Collectors.groupingBy(UserCoupon::getCouponId, Collectors.counting()));
+        //当前用户已领取优惠券数量，key是优惠券Id，value是已领取数量
+        Map<Long, Long> issuedMap = userCoupons.stream()
+                .collect(Collectors.groupingBy(UserCoupon::getCouponId, Collectors.counting()));
+        //4.转换成VO
+        List<CouponVO> couponVOS = new ArrayList<>(coupons.size());
+        for (Coupon coupon : coupons) {
+            CouponVO couponVO = BeanUtil.copyProperties(coupon, CouponVO.class);
+            //是否可以使用：当前用户已经领取优惠券并且未使用优惠券数量>0
+            couponVO.setReceived(unusedMap.getOrDefault(coupon.getId(), 0L) > 0);
+            //是否可以领取：已被领取的优惠券数量小于优惠券总量&&用户已领取数量小于每人领取限制数量
+            couponVO.setAvailable(coupon.getIssueNum() < coupon.getTotalNum()
+            && issuedMap.getOrDefault(coupon.getId(), 0L) < coupon.getUserLimit());
+            couponVOS.add(couponVO);
+        }
+        return Result.success(couponVOS);
     }
 
 

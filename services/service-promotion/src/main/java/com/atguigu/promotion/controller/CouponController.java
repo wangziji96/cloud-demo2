@@ -9,6 +9,7 @@ import com.atguigu.promotion.domain.po.Coupon;
 import com.atguigu.promotion.domain.query.CouponQuery;
 import com.atguigu.promotion.domain.vo.CouponDetail;
 import com.atguigu.promotion.domain.vo.CouponPageVO;
+import com.atguigu.promotion.domain.vo.CouponVO;
 import com.atguigu.promotion.service.ICouponService;
 import com.atguigu.promotion.service.IExchangeCodeService;
 import com.atguigu.result.Result;
@@ -17,6 +18,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -63,6 +66,12 @@ public class CouponController {
     @Operation(summary = "根据优惠券id查询优惠券详情", description = "根据ID查询优惠券详情")
     public Result<CouponDetail> queryCouponDetailById(@PathVariable Long id) {
         return couponService.queryCouponDetailById(id);
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "查询发放中的优惠券")
+    public Result<List<CouponVO>> queryIssuingCoupons() {
+        return couponService.queryIssuingCoupons();
     }
 
 }

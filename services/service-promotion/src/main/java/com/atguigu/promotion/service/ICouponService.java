@@ -7,8 +7,11 @@ import com.atguigu.promotion.domain.po.Coupon;
 import com.atguigu.promotion.domain.query.CouponQuery;
 import com.atguigu.promotion.domain.vo.CouponDetail;
 import com.atguigu.promotion.domain.vo.CouponPageVO;
+import com.atguigu.promotion.domain.vo.CouponVO;
 import com.atguigu.result.Result;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -48,4 +51,10 @@ public interface ICouponService extends IService<Coupon> {
      * @return
      */
     Result<CouponDetail> queryCouponDetailById(Long id);
+
+    /**
+     * 查询发放中的优惠券
+     * @return
+     */
+    Result<List<CouponVO>> queryIssuingCoupons();
 }
