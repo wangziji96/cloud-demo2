@@ -30,8 +30,10 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class ExchangeCodeServiceImpl extends ServiceImpl<ExchangeCodeMapper, ExchangeCode> implements IExchangeCodeService {
+    private final StringRedisTemplate redisTemplate;
     BoundValueOperations<String, String> serialOps;
     public ExchangeCodeServiceImpl(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
         serialOps = redisTemplate.boundValueOps(PromotionConstants.COUPON_CODE_SERIAL_KEY);
     }
 
@@ -66,5 +68,17 @@ public class ExchangeCodeServiceImpl extends ServiceImpl<ExchangeCodeMapper, Exc
             exchangeCodes.add(exchangeCode);
         }
         saveBatch(exchangeCodes);
+    }
+
+    /**
+     * 更新兑换码使用状态
+     *
+     * @param seriaNum
+     * @param used
+     * @return
+     */
+    @Override
+    public boolean updateExchangeCodeMark(long seriaNum, boolean used) {
+        return Boolean.TRUE.equals(redisTemplate.opsForValue().setBit(PromotionConstants.COUPON_CODE_MAP_KEY, seriaNum, used));
     }
 }

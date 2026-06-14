@@ -1,6 +1,8 @@
 package com.atguigu.promotion.service;
 
+import com.atguigu.promotion.domain.po.Coupon;
 import com.atguigu.promotion.domain.po.UserCoupon;
+import com.atguigu.result.Result;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +15,19 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserCouponService extends IService<UserCoupon> {
 
+    /**
+     * 用户领取优惠券
+     * @param couponId 优惠券id
+     * @return
+     */
+    Result<Void> receiveCoupon(Long couponId);
+
+    /**
+     * 用户兑换优惠券
+     * @param code
+     * @return
+     */
+    Result<Void> exchangeCoupon(String code);
+
+    void checkAndCreateUserCoupon(String userIdStr, Coupon coupon);
 }

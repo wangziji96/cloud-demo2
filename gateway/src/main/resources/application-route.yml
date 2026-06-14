@@ -11,7 +11,7 @@ spring:
         - id: promotion-route
           uri: lb://service-promotion
           predicates:
-            - Path=/coupons/**
+            - Path=/coupons/**,/user-coupons/**
         - id: auth-learning
           uri: lb://service-learning
           predicates:

@@ -1,5 +1,6 @@
 package com.atguigu.promotion.domain.po;
 
+import com.atguigu.promotion.enums.ExchangeCodeStatus;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class ExchangeCode implements Serializable {
     private String code;
 
     @Schema(description = "兑换码状态， 1：待兑换，2：已兑换，3：兑换活动已结束")
-    private Integer status;
+    private ExchangeCodeStatus status;
 
     @Schema(description = "兑换人")
     private Long userId;

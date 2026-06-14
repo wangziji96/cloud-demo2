@@ -3,6 +3,7 @@ package com.atguigu.promotion.mapper;
 import com.atguigu.promotion.domain.po.Coupon;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -15,4 +16,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CouponMapper extends BaseMapper<Coupon> {
 
+    int incrIssueNum(@Param("couponId") Long couponId);
 }
